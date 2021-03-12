@@ -1,23 +1,40 @@
-import logo from './logo.svg';
+import React,{useState} from 'react'
 import './App.css';
 
 function App() {
+  const [value,setValue]=useState()
+  const [list,setList]=useState()
+  let array =['Betty', 'Judith','Christian','Emma','Gabi','Steve','Tom','Bob','Jane','Maria'];
+  let newArray =[]
+
+  const setInputValue=(e,x)=>{
+      setValue(x)
+  }
+
+  const complete=(e)=>{
+    setValue(e.target.value)
+    array.forEach(x=>{
+      if(x.substr(0, e.target.value.length).toUpperCase()===e.target.value.toUpperCase()){
+        newArray.push(x)
+        console.log(newArray)
+        setList(
+          newArray.map((x,id)=>{
+            return <p key={id} onClick={e=>setInputValue(e,x)}>{x}</p>
+          })
+        )
+      }
+      if(e.target.value.length===0)
+      setList('')
+    })
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container'>
+      <input type="text" className='autocomplete' onChange={e=>complete(e)} value={value} />
+      <div>
+        <p>{list}</p>
+      </div>
     </div>
   );
 }
